@@ -30,4 +30,6 @@ return [
 
     'use_with_model_trait' => true,
 
+    'icon_component' => 'bs::icon',
+
 ];
