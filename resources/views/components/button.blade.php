@@ -25,9 +25,9 @@
     if ($route) $href = route($route);
     else if ($url) $href = url($url);
 
-    $noText = empty($label) && empty($slot);
+    $noText = empty($label) && (!$slot || empty((string) $slot)) ;
 
-    $content = $label ?? $slot ?? '';
+    $content = $label ?? (string) $slot ?? '';
 
     if(!$showTextMobile){
         $content = "<span class=\"d-none d-md-inline\">{$content}</span>";
@@ -63,7 +63,7 @@
 
         @if($icon)
             <x-bs::dynamic-icon :icon="['size' => 2, ...(is_array($icon) ? $icon : compact('icon'))]" @class([
-    'pe-0 pe-md-1' => !$showTextMobile
+    'pe-0 pe-md-1' => !$showTextMobile && !$noText
     ]) />
         @endif
 
