@@ -17,6 +17,7 @@
     'trigger' => null,
     'click' => null,
     'confirm' => false,
+    'disabled' => false,
     'showTextMobile' => false,
     'indicator' => false,
 ])
@@ -33,6 +34,10 @@
         $content = "<span class=\"d-none d-md-inline\">{$content}</span>";
     }
 
+    if($dismiss && !is_string($dismiss)){
+        $dismiss = 'modal';
+    }
+
     $attributes = $attributes->class([
         'btn',
         'btn-' . $color => $color,
@@ -41,6 +46,7 @@
         'btn-text-' . $textColor => $textColor,
         'btn-' . $size => $size,
         'btn-icon' => $icon && $noText,
+        'disabled' => $disabled,
     ])->merge([
         'type' => !$href && $type !== 'a' ? $type : null,
         'href' => $href,
