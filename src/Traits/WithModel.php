@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\Validator;
 trait WithModel
 {
     public $model = [];
+
     private $modelCollection;
 
     public function model()
     {
-        if (!$this->modelCollection) {
+        if (! $this->modelCollection) {
             $this->modelCollection = collect($this->model);
         }
 
@@ -40,14 +41,14 @@ trait WithModel
         $array = $this->getModel($key);
         $arrayKey = $array ? max(array_keys($array)) + 1 : 0;
 
-        Arr::set($this->model, $key . '.' . $arrayKey, null);
+        Arr::set($this->model, $key.'.'.$arrayKey, null);
 
         $this->rekeyModelItems($key);
     }
 
     public function removeModelItem($key, $arrayKey)
     {
-        Arr::forget($this->model, $key . '.' . $arrayKey);
+        Arr::forget($this->model, $key.'.'.$arrayKey);
 
         $this->rekeyModelItems($key);
     }
@@ -59,12 +60,12 @@ trait WithModel
 
     public function orderModelItem($key, $arrayKey, $direction)
     {
-        $arrayValue = $this->getModel($key . '.' . $arrayKey);
+        $arrayValue = $this->getModel($key.'.'.$arrayKey);
         $swapKey = strtolower($direction) == 'up' ? $arrayKey - 1 : $arrayKey + 1;
 
-        if ($swapValue = $this->getModel($key . '.' . $swapKey)) {
-            $this->setModel($key . '.' . $arrayKey, $swapValue);
-            $this->setModel($key . '.' . $swapKey, $arrayValue);
+        if ($swapValue = $this->getModel($key.'.'.$swapKey)) {
+            $this->setModel($key.'.'.$arrayKey, $swapValue);
+            $this->setModel($key.'.'.$swapKey, $arrayValue);
         }
     }
 
