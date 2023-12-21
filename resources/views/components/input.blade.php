@@ -8,7 +8,9 @@
     'help' => null,
     'model' => null,
     'debounce' => false,
-    'lazy' => false,
+    'live' => false,
+    'blur' => false,
+    'placeholder' => false,
 ])
 
 @php
@@ -16,9 +18,11 @@
     else if (in_array($type, ['tel', 'search', 'email', 'url'])) $inputmode = $type;
     else $inputmode = 'text';
 
-    if ($debounce) $bind = 'debounce.' . (ctype_digit($debounce) ? $debounce : 150) . 'ms';
-    else if ($lazy) $bind = 'lazy';
-    else $bind = 'defer';
+    if ($live) $bind = '.live';
+    else if ($blur) $bind = '.blur';
+    else $bind = '';
+
+    if ($debounce) $bind .= '.debounce.' . (ctype_digit($debounce) ? $debounce : 150) . 'ms';
 
     $wireModel = $attributes->whereStartsWith('wire:model')->first();
     $key = $attributes->get('name', $model ?? $wireModel);
@@ -34,7 +38,8 @@
         'type' => $type,
         'inputmode' => $inputmode,
         'id' => $id,
-        'wire:model.' . $bind => $model ? $prefix . $model : null,
+        'placeholder' => $placeholder ? __($placeholder) : false,
+        'wire:model' . $bind => $model ? $prefix . $model : null,
     ]);
 @endphp
 

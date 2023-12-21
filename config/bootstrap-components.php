@@ -28,7 +28,7 @@ return [
     |
     */
 
-    'use_with_model_trait' => true,
+    'use_with_model_trait' => false,
 
     'icon_component' => 'bs::icon',
 

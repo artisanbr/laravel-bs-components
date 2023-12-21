@@ -20,6 +20,8 @@
     'disabled' => false,
     'showTextMobile' => false,
     'indicator' => false,
+    'indicatorEvent' => false,
+    'submit' => false,
 ])
 
 @php
@@ -37,6 +39,8 @@
     if($dismiss && !is_string($dismiss)){
         $dismiss = 'modal';
     }
+
+    $type = $submit ? 'submit' : $type;
 
     $attributes = $attributes->class([
         'btn',
@@ -56,34 +60,36 @@
         'data-bs-trigger' => $trigger,
         'data-bs-target' => !$href ? $target : null,
         'target' => $href ? $target : null,
-        'title' => !$toggle ? $title : null,
+        'title' => $title,
         'wire:click' => $click,
         'onclick' => $confirm ? 'confirm(\'' . __('Tem certeza?') . '\') || event.stopImmediatePropagation()' : null,
     ]);
+
+    $indicatorEvent = $indicatorEvent ? 'wire:target="'.$indicatorEvent.'"' : '';
 @endphp
-@if($title && $toggle)
+{{--@if($title && $toggle)
     <div title="{{ $title }}">
-        @endif
+        @endif--}}
 
         <{{ $type === 'a' ? 'a' : 'button' }} {{ $attributes }}>
 
         @if($icon)
-            <x-bs::dynamic-icon :icon="['size' => 2, ...(is_array($icon) ? $icon : compact('icon'))]" @class([
+            <x-icon :icon="['size' => 2, ...(is_array($icon) ? $icon : compact('icon'))]" @class([
     'pe-0 pe-md-1' => !$showTextMobile && !$noText
     ]) />
         @endif
 
         @if($indicator)
-            <span class="indicator-label">{!! $content !!}</span>
-            <span class="indicator-progress">
-            {{ is_string($indicator) ? $indicator : __('Aguarde...') }}
-            <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
-        </span>
+            <span class="indicator-label" wire:loading.remove>{!! $content !!}</span>
+            <span class="indicator-progress" wire:loading {{ $indicatorEvent }} >
+                {{ is_string($indicator) ? $indicator : __('Aguarde...') }}
+                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+            </span>
         @else
             {!! $content !!}
         @endif
     </{{ $type === 'a' ? 'a' : 'button' }}>
 
-    @if($title && $toggle)
+{{--@if($title && $toggle)
         </div>
-@endif
+@endif--}}

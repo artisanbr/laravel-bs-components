@@ -1,10 +1,12 @@
 @props([
     'label' => null,
-    'checkLabel' => null,
+    'title' => null,
     'help' => null,
     'switch' => false,
     'model' => null,
     'lazy' => false,
+    'solid' => false,
+    'color' => 'primary',
 ])
 
 @php
@@ -27,12 +29,17 @@
 @endphp
 
 <div>
-    <x-bs::label :label="$label"/>
+    <x-bs::label :label="$title" />
 
-    <div class="form-check {{ $switch ? 'form-switch' : '' }}">
+    <div @class([
+        "form-check form-check-{$color}",
+        'form-check-solid' => $solid,
+        'form-switch' => $switch,
+        'form-check-custom' => !$switch,
+        ])>
         <input {{ $attributes }}>
 
-        <x-bs::check-label :for="$id" :label="$checkLabel"/>
+        <x-bs::check-label :for="$id" :label="$label"/>
 
         <x-bs::error :key="$key"/>
 

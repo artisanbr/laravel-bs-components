@@ -12,6 +12,6 @@
 
 @error($key)
     <div {{ $attributes }}>
-        {{ $message }}
+        {{ __($message) }}
     </div>
 @enderror

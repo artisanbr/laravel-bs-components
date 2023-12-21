@@ -9,7 +9,11 @@ class LaravelBSComponentsProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__.'/../../resources/views', 'bs');
+        //$this->loadViewsFrom(__DIR__.'/../../resources/views', 'bs');
+
+        Blade::anonymousComponentPath(__DIR__.'/../../resources/views/components', 'bs');
+        Blade::componentNamespace('ArtisanLabs\\LaravelBSComponents\\Views\\Components', 'bs');
+
 
         $this->publishes(
             [__DIR__.'/../../config/bootstrap-components.php' => config_path('bootstrap-components.php')],
