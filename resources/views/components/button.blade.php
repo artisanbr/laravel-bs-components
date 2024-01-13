@@ -62,6 +62,7 @@
         'target' => $href ? $target : null,
         'title' => $title,
         'wire:click' => $click,
+        'wire:loading.attr' => 'disabled',
         'onclick' => $confirm ? 'confirm(\'' . __('Tem certeza?') . '\') || event.stopImmediatePropagation()' : null,
     ]);
 
