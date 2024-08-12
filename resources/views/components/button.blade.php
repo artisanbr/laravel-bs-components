@@ -6,6 +6,7 @@
     'hoverTextColor' => null,
     'textColor' => null,
     'size' => null,
+    'iconSize' => null,
     'type' => 'a',
     'route' => null,
     'url' => null,
@@ -16,6 +17,8 @@
     'title' => null,
     'trigger' => null,
     'click' => null,
+    'clipboard' => null,
+    'copy' => null,
     'confirm' => false,
     'disabled' => false,
     'showTextMobile' => false,
@@ -38,6 +41,13 @@
         $dismiss = 'modal';
     }
 
+    $iconSize ??= match($size){
+        'sm' => 3,
+        'lg' => 1,
+        'xl' => '2x',
+        default => 2,
+    };
+
     $attributes = $attributes->class([
         'btn',
         'btn-' . $color => $color,
@@ -47,7 +57,7 @@
         'btn-' . $size => $size,
         'btn-icon' => $icon && $noText,
         'disabled' => $disabled,
-    ])->merge([
+    ])->merge(collect([
         'type' => !$href && $type !== 'a' ? $type : null,
         'href' => $href,
         'role' => !$href && $type === 'a' ? 'button' : null,
@@ -57,9 +67,10 @@
         'data-bs-target' => !$href ? $target : null,
         'target' => $href ? $target : null,
         'title' => !$toggle ? $title : null,
+        'data-clipboard-text' => !$clipboard ? $copy : null,
         'wire:click' => $click,
         'onclick' => $confirm ? 'confirm(\'' . __('Tem certeza?') . '\') || event.stopImmediatePropagation()' : null,
-    ]);
+    ])->filter()->toArray());
 @endphp
 @if($title && $toggle)
     <div title="{{ $title }}">
@@ -68,7 +79,7 @@
         <{{ $type === 'a' ? 'a' : 'button' }} {{ $attributes }}>
 
         @if($icon)
-            <x-bs::dynamic-icon :icon="['size' => 2, ...(is_array($icon) ? $icon : compact('icon'))]" @class([
+            <x-bs::dynamic-icon :icon="['size' => $iconSize, ...(is_array($icon) ? $icon : compact('icon'))]" @class([
     'pe-0 pe-md-1' => !$showTextMobile && !$noText
     ]) />
         @endif
