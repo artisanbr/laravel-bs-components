@@ -48,6 +48,12 @@
         default => 2,
     };
 
+    $copy ??= $clipboard ?? null;
+
+    if($copy && !$icon){
+    $icon = 'copy';
+    }
+
     $attributes = $attributes->class([
         'btn',
         'btn-' . $color => $color,
@@ -67,10 +73,11 @@
         'data-bs-target' => !$href ? $target : null,
         'target' => $href ? $target : null,
         'title' => !$toggle ? $title : null,
-        'data-clipboard-text' => !$clipboard ? $copy : null,
+        'data-clipboard-text' => $copy,
         'wire:click' => $click,
         'onclick' => $confirm ? 'confirm(\'' . __('Tem certeza?') . '\') || event.stopImmediatePropagation()' : null,
     ])->filter()->toArray());
+
 @endphp
 @if($title && $toggle)
     <div title="{{ $title }}">
